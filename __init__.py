@@ -24,6 +24,9 @@ bl_info = {
 
 import bpy
 
-classes = ()
+from . generate_button import GenerateButton
+from . recommender_panel import RecommenderPanel
+
+classes = (GenerateButton, RecommenderPanel)
 
 register, unregister = bpy.utils.register_classes_factory(classes)
