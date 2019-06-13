@@ -12,14 +12,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 bl_info = {
-    "name" : "material-recommender",
+    "name" : "Material Recommender",
     "author" : "Vlad Vrabie",
     "description" : "Quickly generate materials based on your preferences",
     "blender" : (2, 80, 0),
     "version" : (0, 0, 1),
     "location" : "Properties",
     "warning" : "",
-    "category" : "Generic"
+    "category" : "Material"
 }
 
 import bpy
