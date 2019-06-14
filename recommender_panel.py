@@ -28,10 +28,10 @@ class RecommenderPanel(bpy.types.Panel):
             row = self.layout.row()
             split = row.split(factor=0.5)
             column1 = split.column()
-            column1.label(text=str(i))
+            column1.template_preview(bpy.data.textures['frame0000.png'], show_buttons=False)
         
             column2 = split.column()
-            column2.label(text=str(i+1))
+            column2.prop(gpr_data[i], 'rating', text='Rating', slider=True)
     
     def _draw_recommendations_tab(self, context):
         pass
