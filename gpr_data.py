@@ -14,7 +14,8 @@ class GPRData(PropertyGroup):
 
     rating: IntProperty(
         name='Rating',
-        description='The rating given by the user',
+        description='The rating given for a specific material. If given a high rating, ' +
+            'similar materials will be recommended.',
         default=0,
         min=0,
         max=10
