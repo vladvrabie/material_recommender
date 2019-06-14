@@ -24,9 +24,20 @@ bl_info = {
 
 import bpy
 
-from . generate_button import GenerateButton
 from . recommender_panel import RecommenderPanel
+from . recommender_panel_props import RecommenderPanelProps
 
-classes = (GenerateButton, RecommenderPanel)
+classes = (RecommenderPanelProps, RecommenderPanel)
 
-register, unregister = bpy.utils.register_classes_factory(classes)
+def register():
+    for aclass in classes:
+        bpy.utils.register_class(aclass)
+    bpy.types.Scene.recommender_props = bpy.props.PointerProperty(type=RecommenderPanelProps)
+
+def unregister():
+    for aclass in classes:
+        bpy.utils.unregister_class(aclass)
+    del bpy.types.Scene.recommender_props
+
+if __name__ == '__main__':
+    register()

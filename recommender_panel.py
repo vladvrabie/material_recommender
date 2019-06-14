@@ -1,5 +1,6 @@
 import bpy
 
+
 class RecommenderPanel(bpy.types.Panel):
     bl_idname = "RECOMMENDER_PT_PANEL"
     bl_label = "Material Recommender"
@@ -8,5 +9,7 @@ class RecommenderPanel(bpy.types.Panel):
     bl_context = "material"
 
     def draw(self, context):
-        self.layout.operator("material.generate_button", text="Generate materials")
-        #TODO: self.layout.operator("material.reset_button", text="Reset")
+        properties = context.scene.recommender_props
+
+        first_row = self.layout.row()
+        first_row.prop(properties, 'tabs', expand=True)
