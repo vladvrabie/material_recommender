@@ -24,20 +24,24 @@ bl_info = {
 
 import bpy
 
+from . gpr_data import GPRData
+from . gpr_list_operator import GRPListGenerator
 from . recommender_panel import RecommenderPanel
 from . recommender_panel_props import RecommenderPanelProps
 
-classes = (RecommenderPanelProps, RecommenderPanel)
+classes = (GPRData, GRPListGenerator, RecommenderPanelProps, RecommenderPanel)
 
 def register():
     for aclass in classes:
         bpy.utils.register_class(aclass)
     bpy.types.Scene.recommender_props = bpy.props.PointerProperty(type=RecommenderPanelProps)
+    bpy.types.Scene.gpr_data = bpy.props.CollectionProperty(type=GPRData)
 
 def unregister():
     for aclass in classes:
         bpy.utils.unregister_class(aclass)
     del bpy.types.Scene.recommender_props
+    del bpy.types.Scene.gpr_data
 
 if __name__ == '__main__':
     register()

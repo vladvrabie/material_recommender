@@ -13,3 +13,25 @@ class RecommenderPanel(bpy.types.Panel):
 
         first_row = self.layout.row()
         first_row.prop(properties, 'tabs', expand=True)
+
+        if properties.tabs == 'LEARN':
+            self._draw_learn_tab(context)
+        elif properties.tabs == 'RECOMMENDATIONS':
+            self._draw_recommendations_tab(context)
+    
+    def _draw_learn_tab(self, context):
+        row = self.layout.row()
+        row.operator('scene.gpr_list_generator')
+
+        gpr_data = context.scene.gpr_data
+        for i in range(len(gpr_data)):
+            row = self.layout.row()
+            split = row.split(factor=0.5)
+            column1 = split.column()
+            column1.label(text=str(i))
+        
+            column2 = split.column()
+            column2.label(text=str(i+1))
+    
+    def _draw_recommendations_tab(self, context):
+        pass
