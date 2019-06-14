@@ -8,7 +8,7 @@ class RecommenderPanelProps(PropertyGroup):
     tabs: EnumProperty(
         items = [
             ('LEARN', "Learn", "", 0),
-            ('RECOMMANDATIONS', "Recommandations", "", 1),
+            ('RECOMMENDATIONS', "Recommendations", "", 1),
         ],
         default = 'LEARN',
         name = "Tabs",
