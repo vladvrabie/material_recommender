@@ -21,6 +21,8 @@ from . gpr_material_data import GPRMaterialData
 from . gpr_materials_list import GPRMaterialsList
 from . gpr_list_generator import GRPListGenerator
 from . gpr_ui_list import GPRUIList
+from . preview_operators import FrameStepper
+from . preview_operators import PreviousFrameStepper, NextFrameStepper
 from . recommender_panel import RecommenderPanel
 from . recommender_panel_props import RecommenderPanelProps
 
@@ -41,6 +43,9 @@ classes = (
     GPRMaterialsList,
     GRPListGenerator,
     GPRUIList,
+    FrameStepper,
+    PreviousFrameStepper,
+    NextFrameStepper,
     RecommenderPanelProps,
     RecommenderPanel
 )
