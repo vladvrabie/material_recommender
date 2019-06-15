@@ -47,16 +47,16 @@ class RecommenderPanel(Panel):
                 properties.dirty_preview = False
 
             row.template_preview(
-                gpr_materials.selected.frame_texture(0),
+                gpr_materials.selected.current_frame_texture,
                 show_buttons=False
             )
 
-            # row = self.layout.row()
-            # row.alignment = 'CENTER'
-            # row.operator prev
+            row = self.layout.row(align=True)
+            row.alignment = 'CENTER'
+            row.operator('preview.previousstepper', icon='FRAME_PREV')
             # row.operator play
             # row.operator paue
-            # row.operator next
+            row.operator('preview.nextstepper', icon='FRAME_NEXT')
 
         # if all != 0
         #     row.operator learn
