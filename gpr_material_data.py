@@ -19,6 +19,11 @@ class GPRMaterialData(PropertyGroup):
                     'retrieval from bpy.data images or textures.'
     )
 
+    preview_frame_index: IntProperty(
+        name='Previewed Frame Index',
+        description='Remebers which frame is previewed.'
+    )
+
     rating: IntProperty(
         name='Rating',
         description='The rating given for a specific material. If given ' +
@@ -34,6 +39,10 @@ class GPRMaterialData(PropertyGroup):
         size=19,
         precision=8
     )
+
+    @property
+    def current_frame_texture(self):
+        return self.frame_texture(self.preview_frame_index)
 
     def frame_texture(self, frame_index):
         ''' Utility function to get the texture of a frame. '''
