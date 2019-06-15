@@ -1,7 +1,8 @@
-import bpy
+from bpy.types import Panel
+import random
 
 
-class RecommenderPanel(bpy.types.Panel):
+class RecommenderPanel(Panel):
     bl_idname = "RECOMMENDER_PT_PANEL"
     bl_label = "Material Recommender"
     bl_space_type = "PROPERTIES"
@@ -18,20 +19,47 @@ class RecommenderPanel(bpy.types.Panel):
             self._draw_learn_tab(context)
         elif properties.tabs == 'RECOMMENDATIONS':
             self._draw_recommendations_tab(context)
-    
+
     def _draw_learn_tab(self, context):
         row = self.layout.row()
         row.operator('scene.gpr_list_generator')
 
-        gpr_data = context.scene.gpr_data
-        for i in range(len(gpr_data)):
+        gpr_materials = context.scene.gpr_materials
+        row = self.layout.row()
+        row.template_list(
+            'GPRUIList',    # subclass of UIList
+            'GPR_UI_List',  # id of widget
+            gpr_materials,  # propertygroup where the collection of items is
+            'mat_list',     # collection property in property group
+            gpr_materials,  # propertygroup with the index of the selected item
+            'index'         # index property in property group
+        )
+
+        if gpr_materials.index != -1:
+            properties = context.scene.recommender_props
+
             row = self.layout.row()
-            split = row.split(factor=0.5)
-            column1 = split.column()
-            column1.template_preview(bpy.data.textures['frame0000.png'], show_buttons=False)
-        
-            column2 = split.column()
-            column2.prop(gpr_data[i], 'rating', text='Rating', slider=True)
-    
+            row.alignment = 'CENTER'
+            if properties.dirty_preview is True:
+                # changing scale to force a redraw on the preview
+                row.scale_x = 1.0 - random.uniform(0.0, 0.1)
+                row.scale_y = 1.0 + random.uniform(0.0, 0.1)
+                properties.dirty_preview = False
+
+            row.template_preview(
+                gpr_materials.selected.frame_texture(0),
+                show_buttons=False
+            )
+
+            # row = self.layout.row()
+            # row.alignment = 'CENTER'
+            # row.operator prev
+            # row.operator play
+            # row.operator paue
+            # row.operator next
+
+        # if all != 0
+        #     row.operator learn
+
     def _draw_recommendations_tab(self, context):
         pass

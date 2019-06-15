@@ -11,37 +11,54 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-bl_info = {
-    "name" : "Material Recommender",
-    "author" : "Vlad Vrabie",
-    "description" : "Quickly generate materials based on your preferences",
-    "blender" : (2, 80, 0),
-    "version" : (0, 0, 1),
-    "location" : "Properties",
-    "warning" : "",
-    "category" : "Material"
-}
-
 import bpy
+from bpy.props import PointerProperty
+from bpy.types import Scene
+from bpy.utils import register_class
 
-from . gpr_data import GPRData
-from . gpr_list_operator import GRPListGenerator
+from . frame_id_property import FrameIdProperty
+from . gpr_material_data import GPRMaterialData
+from . gpr_materials_list import GPRMaterialsList
+from . gpr_list_generator import GRPListGenerator
+from . gpr_ui_list import GPRUIList
 from . recommender_panel import RecommenderPanel
 from . recommender_panel_props import RecommenderPanelProps
 
-classes = (GPRData, GRPListGenerator, RecommenderPanelProps, RecommenderPanel)
+bl_info = {
+    "name": "Material Recommender",
+    "author": "Vlad Vrabie",
+    "description": "Quickly generate materials based on your preferences",
+    "blender": (2, 80, 0),
+    "version": (0, 0, 1),
+    "location": "Properties",
+    "warning": "",
+    "category": "Material"
+}
+
+classes = (
+    FrameIdProperty,
+    GPRMaterialData,
+    GPRMaterialsList,
+    GRPListGenerator,
+    GPRUIList,
+    RecommenderPanelProps,
+    RecommenderPanel
+)
+
 
 def register():
     for aclass in classes:
-        bpy.utils.register_class(aclass)
-    bpy.types.Scene.recommender_props = bpy.props.PointerProperty(type=RecommenderPanelProps)
-    bpy.types.Scene.gpr_data = bpy.props.CollectionProperty(type=GPRData)
+        register_class(aclass)
+    Scene.recommender_props = PointerProperty(type=RecommenderPanelProps)
+    Scene.gpr_materials = PointerProperty(type=GPRMaterialsList)
+
 
 def unregister():
     for aclass in classes:
         bpy.utils.unregister_class(aclass)
     del bpy.types.Scene.recommender_props
-    del bpy.types.Scene.gpr_data
+    del bpy.types.Scene.gpr_materials
+
 
 if __name__ == '__main__':
     register()
