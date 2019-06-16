@@ -23,6 +23,8 @@ from . gpr_list_generator import GRPListGenerator
 from . gpr_ui_list import GPRUIList
 from . preview_operators import FrameStepper
 from . preview_operators import PreviousFrameStepper, NextFrameStepper
+from . export_to_vse_operator import ExportToVSEOperator
+from . gpr_learn_operator import GPRLearnOperator
 from . recommender_panel import RecommenderPanel
 from . recommender_panel_props import RecommenderPanelProps
 
@@ -46,6 +48,8 @@ classes = (
     FrameStepper,
     PreviousFrameStepper,
     NextFrameStepper,
+    ExportToVSEOperator,
+    GPRLearnOperator,
     RecommenderPanelProps,
     RecommenderPanel
 )

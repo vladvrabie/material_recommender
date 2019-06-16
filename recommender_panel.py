@@ -35,9 +35,9 @@ class RecommenderPanel(Panel):
             'index'         # index property in property group
         )
 
-        if gpr_materials.index != -1:
-            properties = context.scene.recommender_props
+        properties = context.scene.recommender_props
 
+        if gpr_materials.index != -1:
             row = self.layout.row()
             row.alignment = 'CENTER'
             if properties.dirty_preview is True:
@@ -51,15 +51,23 @@ class RecommenderPanel(Panel):
                 show_buttons=False
             )
 
-            row = self.layout.row(align=True)
-            row.alignment = 'CENTER'
-            row.operator('preview.previousstepper', icon='FRAME_PREV')
-            # row.operator play
-            # row.operator paue
-            row.operator('preview.nextstepper', icon='FRAME_NEXT')
+            row = self.layout.row()
+            split_20_80 = row.split(factor=0.2)
+            split_20_80.row()  # 20% to the left empty
+            split_60_20 = split_20_80.split(factor=0.75)  # 60% center
+            steppers_row = split_60_20.row(align=True)
+            steppers_row.alignment = 'CENTER'
+            steppers_row.operator('preview.previousstepper', icon='FRAME_PREV')
+            steppers_row.operator('preview.nextstepper', icon='FRAME_NEXT')
+            to_vse_row = split_60_20.row()  # 20% to the right
+            to_vse_row.alignment = 'RIGHT'
+            to_vse_row.operator('scene.export_to_vse', icon='SEQUENCE')
 
-        # if all != 0
-        #     row.operator learn
+        row = self.layout.row()
+        row.prop(properties, 'persistent_gpr')
+
+        row = self.layout.row()
+        row.operator('scene.gpr_learn')
 
     def _draw_recommendations_tab(self, context):
         pass
