@@ -28,7 +28,15 @@ class RecommenderPanelProps(PropertyGroup):
 
     dirty_preview: BoolProperty(
         name='Is Preview Dirty',
-        description='This toggles when user selects a new material' +
+        description='This toggles when user selects a new material ' +
                     'to preview, which will force a redraw.',
+        default=False
+    )
+
+    persistent_gpr: BoolProperty(
+        name='Persistent preferences',
+        description='With persistent preferences, you can do multiple ' +
+                    'rounds of rating materials. The recommender will get ' +
+                    'better at recommending materials after each round.',
         default=False
     )
