@@ -1,4 +1,4 @@
-from bpy.props import BoolProperty, EnumProperty
+from bpy.props import BoolProperty, EnumProperty, IntProperty
 from bpy.types import PropertyGroup
 
 
@@ -48,4 +48,14 @@ class RecommenderPanelProps(PropertyGroup):
                     'rounds of rating materials. The recommender will get ' +
                     'better at recommending materials after each round.',
         default=False
+    )
+
+    gpr_threshold: IntProperty(
+        name='Threshold',
+        description='Minimum rating for a material to be recommended. ' +
+                    'Search tab will use the materials rated above ' +
+                    'this threshold.',
+        default=7,
+        min=0,
+        max=10
     )

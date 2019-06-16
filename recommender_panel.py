@@ -63,11 +63,15 @@ class RecommenderPanel(Panel):
             to_vse_row.alignment = 'RIGHT'
             to_vse_row.operator('scene.export_to_vse', icon='SEQUENCE')
 
-        row = self.layout.row()
-        row.prop(properties, 'persistent_gpr')
+        if len(gpr_materials.mat_list) > 0:
+            row = self.layout.row()
+            row.prop(properties, 'persistent_gpr')
 
-        row = self.layout.row()
-        row.operator('scene.gpr_learn')
+            row = self.layout.row()
+            row.prop(properties, 'gpr_threshold', slider=True)
+
+            row = self.layout.row()
+            row.operator('scene.gpr_learn')
 
     def _draw_recommendations_tab(self, context):
         pass

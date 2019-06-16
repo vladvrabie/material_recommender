@@ -9,6 +9,7 @@ class GPRLearnOperator(Operator):
 
     @classmethod
     def poll(cls, context):
+        # TODO: if at least one is different than 1?
         return True
 
     def execute(self, context):
