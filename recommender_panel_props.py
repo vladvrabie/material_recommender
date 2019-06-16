@@ -16,8 +16,17 @@ class RecommenderPanelProps(PropertyGroup):
                 'RECOMMENDATIONS',
                 "Recommendations",
                 "Recommendations tab offers sugestions based on your " +
-                "preferences. You can fine tune and save materials.",
+                "preferences.",
                 1
+            ),
+            (
+                'SEARCH',
+                "Search",
+                "Search tab offers a grafical view of your " +
+                "preferences. Blue dots are materials that are above " +
+                "your threshold. New materials are inferred from the " +
+                "coordinates given.",
+                2
             )
         ],
         default='LEARN',
