@@ -1,24 +1,12 @@
-from bpy.props import BoolProperty, IntProperty, PointerProperty
+from bpy.props import BoolProperty, IntProperty
 from bpy.types import PropertyGroup
-from . data.material_list import MaterialList
+
+from . base import BaseTabProperties
 
 
-class PreferenceProperties(PropertyGroup):
+class PreferencesProperties(BaseTabProperties, PropertyGroup):
 
-    materials: PointerProperty(
-        type=MaterialList,
-        name='Preference Tab Materials',
-        description='The list of materials generated in the preference tab'
-    )
-
-    dirty_preview: BoolProperty(
-        name='Is Preview Dirty',
-        description='This toggles when user selects a new material ' +
-                    'to preview, which will force a redraw.',
-        default=False
-    )
-
-    persistent_gpr: BoolProperty(
+    is_persistent: BoolProperty(
         name='Persistent preferences',
         description='With persistent preferences, you can do multiple ' +
                     'rounds of rating materials. The recommender will get ' +
@@ -26,7 +14,7 @@ class PreferenceProperties(PropertyGroup):
         default=False
     )
 
-    gpr_threshold: IntProperty(
+    threshold: IntProperty(
         name='Threshold',
         description='Minimum rating for a material to be recommended. ' +
                     'Search tab will use the materials rated above ' +
