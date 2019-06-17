@@ -2,24 +2,30 @@ from bpy.types import Operator
 
 
 class FrameStepper(Operator):
-    bl_idname = 'preview.basestepper'
+    bl_idname = 'preview.base_stepper'
     bl_label = 'Base Frame Stepper'
     bl_description = 'This operator will step through '\
         'the frames of the render.'
 
-    material: None = None  # to avoid another import to material data
-
     def execute(self, context):
-        if self.material is not None:
-            self.material.preview_frame_index += self.step
-            self.material.preview_frame_index %= len(self.material.frames_ids)
-            properties = context.scene.recommender_props
-            properties.dirty_preview = True
+        properties = context.scene.global_properties
+
+        if properties.tabs == 'PREFERENCES':
+            properties = context.scene.preferences_properties
+        elif properties.tabs == 'RECOMMENDATIONS':
+            properties = context.scene.recommendations_properties
+        elif properties.tabs == 'SEARCH':
+            properties = context.scene.search_properties
+
+        material = properties.materials.selected
+        material.preview_frame_index += self.step
+        material.preview_frame_index %= len(material.frames_ids)
+        properties.dirty_preview = True
         return {'FINISHED'}
 
 
 class NextFrameStepper(FrameStepper):
-    bl_idname = 'preview.nextstepper'
+    bl_idname = 'preview.next_stepper'
     bl_label = ''
     bl_description = 'This operator will move to the next '\
         'frame of the render.'
@@ -28,7 +34,7 @@ class NextFrameStepper(FrameStepper):
 
 
 class PreviousFrameStepper(FrameStepper):
-    bl_idname = 'preview.previousstepper'
+    bl_idname = 'preview.previous_stepper'
     bl_label = ''
     bl_description = 'This operator will move to the previous '\
         'frame of the render.'

@@ -10,7 +10,16 @@ class ExportToVSEOperator(Operator):
         'Sequencer to be visualised as an animation.'
 
     def execute(self, context):
-        material = context.scene.preferences_properties.materials.selected
+        properties = context.scene.global_properties
+
+        if properties.tabs == 'PREFERENCES':
+            properties = context.scene.preferences_properties
+        elif properties.tabs == 'RECOMMENDATIONS':
+            properties = context.scene.recommendations_properties
+        elif properties.tabs == 'SEARCH':
+            properties = context.scene.search_properties
+
+        material = properties.materials.selected
         frames_path, frames_names = material.save_to_disk()
 
         # context.scene.sequence_editor_create()  # add? remove?
