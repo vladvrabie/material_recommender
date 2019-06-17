@@ -53,7 +53,9 @@ class RecommenderPanel(Panel):
 
             row = self.layout.row()
             split_20_80 = row.split(factor=0.2)
-            split_20_80.row()  # 20% to the left empty
+            row = split_20_80.row()  # 20% to the left
+            row.alignment = 'LEFT'
+            row.operator('scene.gpr_export_to_materials', icon='MATERIAL')
             split_60_20 = split_20_80.split(factor=0.75)  # 60% center
             steppers_row = split_60_20.row(align=True)
             steppers_row.alignment = 'CENTER'

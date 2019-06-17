@@ -21,6 +21,7 @@ from . gpr_material_data import GPRMaterialData
 from . gpr_materials_list import GPRMaterialsList
 from . gpr_list_generator import GRPListGenerator
 from . gpr_ui_list import GPRUIList
+from . export_to_materials import ExportToMaterialsOperator
 from . preview_operators import FrameStepper
 from . preview_operators import PreviousFrameStepper, NextFrameStepper
 from . export_to_vse_operator import ExportToVSEOperator
@@ -45,6 +46,7 @@ classes = (
     GPRMaterialsList,
     GRPListGenerator,
     GPRUIList,
+    ExportToMaterialsOperator,
     FrameStepper,
     PreviousFrameStepper,
     NextFrameStepper,
