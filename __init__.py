@@ -16,18 +16,27 @@ from bpy.props import PointerProperty
 from bpy.types import Scene
 from bpy.utils import register_class
 
-from . frame_id_property import FrameIdProperty
-from . gpr_material_data import GPRMaterialData
-from . gpr_materials_list import GPRMaterialsList
-from . gpr_list_generator import GRPListGenerator
-from . gpr_ui_list import GPRUIList
-from . export_to_materials import ExportToMaterialsOperator
-from . preview_operators import FrameStepper
-from . preview_operators import PreviousFrameStepper, NextFrameStepper
-from . export_to_vse_operator import ExportToVSEOperator
-from . gpr_learn_operator import GPRLearnOperator
-from . recommender_panel import RecommenderPanel
-from . recommender_panel_props import RecommenderPanelProps
+from . operators.preferences.generator import PreferencesListGenerator
+from . operators.preferences.learn import LearnPreferencesOperator
+from . operators.preview.export_to_materials import ExportToMaterialsOperator
+from . operators.preview.export_to_vse import ExportToVSEOperator
+from . operators.preview.steppers import FrameStepper
+from . operators.preview.steppers import NextFrameStepper
+from . operators.preview.steppers import PreviousFrameStepper
+# from . operators.recommendations.recommend import
+# from . operators.search.search import
+from . panels.recommender_panel import RecommenderPanel
+from . properties.data.frame_id import FrameIdGroup
+from . properties.data.material_data import MaterialData
+from . properties.data.material_list import MaterialList
+from . properties.common import GlobalProperties
+from . properties.preferences import PreferencesProperties
+from . properties.recommendations import RecommendationsProperties
+from . properties.search import SearchProperties
+from . ui.base_list import BaseList
+from . ui.preferences import PreferencesList
+from . ui.recommendations import RecommendationsList
+
 
 bl_info = {
     "name": "Material Recommender",
@@ -41,34 +50,43 @@ bl_info = {
 }
 
 classes = (
-    FrameIdProperty,
-    GPRMaterialData,
-    GPRMaterialsList,
-    GRPListGenerator,
-    GPRUIList,
+    PreferencesListGenerator,
+    LearnPreferencesOperator,
     ExportToMaterialsOperator,
-    FrameStepper,
-    PreviousFrameStepper,
-    NextFrameStepper,
     ExportToVSEOperator,
-    GPRLearnOperator,
-    RecommenderPanelProps,
-    RecommenderPanel
+    FrameStepper,
+    NextFrameStepper,
+    PreviousFrameStepper,
+    RecommenderPanel,
+    FrameIdGroup,
+    MaterialData,
+    MaterialList,
+    GlobalProperties,
+    PreferencesProperties,
+    RecommendationsProperties,
+    SearchProperties,
+    BaseList,
+    PreferencesList,
+    RecommendationsList
 )
 
 
 def register():
     for aclass in classes:
         register_class(aclass)
-    Scene.recommender_props = PointerProperty(type=RecommenderPanelProps)
-    Scene.gpr_materials = PointerProperty(type=GPRMaterialsList)
+    Scene.global_properties = PointerProperty(type=GlobalProperties)
+    Scene.preferences_properties = PointerProperty(type=PreferencesProperties)
+    Scene.recommnedations_properties = PointerProperty(type=RecommendationsProperties)
+    Scene.search_properties = PointerProperty(type=SearchProperties)
 
 
 def unregister():
     for aclass in classes:
         bpy.utils.unregister_class(aclass)
-    del bpy.types.Scene.recommender_props
-    del bpy.types.Scene.gpr_materials
+    del Scene.global_properties
+    del Scene.preferences_properties
+    del Scene.recommnedations_properties
+    del Scene.search_properties
 
 
 if __name__ == '__main__':
