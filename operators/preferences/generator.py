@@ -2,17 +2,17 @@ from bpy.types import Operator
 import random
 
 
-class GRPListGenerator(Operator):
-    bl_idname = 'scene.gpr_list_generator'
-    bl_label = 'Populate GPR list'
+class PreferencesListGenerator(Operator):
+    bl_idname = 'scene.preferences_list_generator'
+    bl_label = 'Populate preferences list'
     bl_description = 'A new set of materials will be generated for rating.'
 
     def execute(self, context):
-        gpr_materials = context.scene.gpr_materials.mat_list
+        materials = context.scene.preferences_properties.materials.collection
 
-        # 30-40 times...
-        gpr_materials.add()
-        current_material = gpr_materials[-1]
+        # TODO: generate 30-40 times...
+        materials.add()
+        current_material = materials[-1]
 
         # generate 19 random numbers (??? - maybe not necessary)
         # TODO: in theory, here I need to call the neural net
