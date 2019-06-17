@@ -2,8 +2,8 @@ import os
 import tempfile
 
 import bpy
-from bpy.props import CollectionProperty, IntProperty
-from bpy.props import FloatVectorProperty, StringProperty
+from bpy.props import CollectionProperty, FloatVectorProperty
+from bpy.props import IntProperty, StringProperty
 from bpy.types import PropertyGroup
 
 from . frame_id import FrameIdGroup
@@ -37,8 +37,8 @@ class MaterialData(PropertyGroup):
         max=10
     )
 
-    values: FloatVectorProperty(
-        name='Values',
+    shader_values: FloatVectorProperty(
+        name='Shader Values',
         description='Values for shader to render the material',
         size=19,
         precision=8

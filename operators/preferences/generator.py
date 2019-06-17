@@ -1,9 +1,10 @@
-from bpy.types import Operator
 import random
+
+from bpy.types import Operator
 
 
 class PreferencesListGenerator(Operator):
-    bl_idname = 'scene.preferences_list_generator'
+    bl_idname = 'scene.preferences_list_generator'  # TODO: rename all bl_idnames
     bl_label = 'Populate preferences list'
     bl_description = 'A new set of materials will be generated for rating.'
 

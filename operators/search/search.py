@@ -1,1 +1,1 @@
-# TODO: implement searc operator
+# TODO: implement search operator
