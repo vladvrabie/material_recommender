@@ -1,22 +1,23 @@
 from bpy.props import CollectionProperty, IntProperty
 from bpy.types import PropertyGroup
-from . gpr_material_data import GPRMaterialData
+
+from . material_data import MaterialData
 
 
 def index_changed(self, context):
     context.scene.recommender_props.dirty_preview = True
 
 
-class GPRMaterialsList(PropertyGroup):
+class MaterialList(PropertyGroup):
 
-    mat_list: CollectionProperty(
-        type=GPRMaterialData,
-        name='GPR Materials List',
-        description='This holds all the materials for the GPR algorithm.'
+    collection: CollectionProperty(
+        type=MaterialData,
+        name='Material List',
+        description='This holds a list of materials.'
     )
 
     index: IntProperty(
-        name='GPR Materials List Index',
+        name='Materials List Index',
         description='This will remember which material was clicked ' +
                     'by the user (for preview).',
         default=-1,

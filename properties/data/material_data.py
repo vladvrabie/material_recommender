@@ -1,35 +1,37 @@
+import os
+import tempfile
+
 import bpy
 from bpy.props import CollectionProperty, IntProperty
 from bpy.props import FloatVectorProperty, StringProperty
 from bpy.types import PropertyGroup
-from . frame_id_property import FrameIdProperty
-import os
-import tempfile
+
+from . frame_id import FrameIdGroup
 
 
-class GPRMaterialData(PropertyGroup):
+class MaterialData(PropertyGroup):
 
-    material_id: StringProperty(
-        name='Material_Id',
+    id: StringProperty(
+        name='Material ID',
         description='Unique id for this generated material',
     )
 
     frames_ids: CollectionProperty(
-        type=FrameIdProperty,
-        name='Frames_IDs',
+        type=FrameIdGroup,
+        name='Frames IDs',
         description='IDs of the frames of the generated material for ' +
-                    'retrieval from bpy.data images or textures.'
+                    'retrieval from bpy.data.images or textures'
     )
 
     preview_frame_index: IntProperty(
         name='Previewed Frame Index',
-        description='Remebers which frame is previewed.'
+        description='Remebers which frame is previewed'
     )
 
     rating: IntProperty(
         name='Rating',
         description='The rating given for a specific material. If given ' +
-                    'a high rating, similar materials will be recommended.',
+                    'a high rating, similar materials will be recommended',
         default=0,
         min=0,
         max=10
@@ -37,7 +39,7 @@ class GPRMaterialData(PropertyGroup):
 
     values: FloatVectorProperty(
         name='Values',
-        description='Values for shader to render the material.',
+        description='Values for shader to render the material',
         size=19,
         precision=8
     )
@@ -61,11 +63,12 @@ class GPRMaterialData(PropertyGroup):
             self.frames_ids.add()
             self.frames_ids[-1].id = file_name
 
-            bpy.data.images.load(path + file_name)
+            bpy.data.images.load(os.path.join(path, file_name))
             bpy.data.textures.new(name=file_name, type='IMAGE')
             bpy.data.textures[file_name].image = bpy.data.images[file_name]
 
     def load_from_memory(self, list_of_images):
+        # TODO: load image from numpy after procedurally generated
         pass
 
     def save_to_disk(self, path='', file_format='PNG'):
@@ -86,3 +89,5 @@ class GPRMaterialData(PropertyGroup):
                 os.remove(frame_path)
             frame.save_render(frame_path)
         return (path, frames_names)
+
+    # TODO: create a function to generate frame file names
