@@ -1,18 +1,19 @@
-from bpy.types import Operator
 import os
+
+from bpy.types import Operator
 
 
 class ExportToVSEOperator(Operator):
-    bl_idname = 'scene.export_to_vse'
+    bl_idname = 'preview.export_to_vse'
     bl_label = ''
     bl_description = 'These frames can be exported to the Video Editor '\
         'Sequencer to be visualised as an animation.'
 
     def execute(self, context):
-        gpr_material = context.scene.gpr_materials.selected
-        frames_path, frames_names = gpr_material.save_to_disk()
+        material = context.scene.preferences_properties.materials.selected
+        frames_path, frames_names = material.save_to_disk()
 
-        # context.scene.sequence_editor_create()  # good? bad?
+        # context.scene.sequence_editor_create()  # add? remove?
         sequence_name = 'RecommenderStrip'
         sequences = context.scene.sequence_editor.sequences
 

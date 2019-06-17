@@ -7,13 +7,14 @@ class FrameStepper(Operator):
     bl_description = 'This operator will step through '\
         'the frames of the render.'
 
-    # step is not defined here; derived classes don't override it
+    material: None = None  # to avoid another import to material data
+
     def execute(self, context):
-        gpr_material = context.scene.gpr_materials.selected
-        gpr_material.preview_frame_index += self.step
-        gpr_material.preview_frame_index %= len(gpr_material.frames_ids)
-        properties = context.scene.recommender_props
-        properties.dirty_preview = True
+        if self.material is not None:
+            self.material.preview_frame_index += self.step
+            self.material.preview_frame_index %= len(self.material.frames_ids)
+            properties = context.scene.recommender_props
+            properties.dirty_preview = True
         return {'FINISHED'}
 
 
