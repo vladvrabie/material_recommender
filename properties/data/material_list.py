@@ -5,7 +5,12 @@ from . material_data import MaterialData
 
 
 def index_changed(self, context):
-    context.scene.recommender_props.dirty_preview = True
+    properties = context.scene.global_properties
+
+    if properties.tabs == 'PREFERENCES':
+        context.scene.preferences_properties.dirty_preview = True
+    elif properties.tabs == 'RECOMMENDATIONS':
+        context.scene.recommendations_properties.dirty_preview = True
 
 
 class MaterialList(PropertyGroup):
@@ -27,4 +32,4 @@ class MaterialList(PropertyGroup):
     @property
     def selected(self):
         if self.index != -1:
-            return self.mat_list[self.index]
+            return self.collection[self.index]
