@@ -14,4 +14,12 @@ class LearnPreferencesOperator(Operator):
 
     def execute(self, context):
         # TODO: implement learn operator
+
+        # MOCK for Search tab
+        import bpy
+        var = context.scene.search_properties.latent_space_image_id
+        bpy.data.textures.new(name=var, type='IMAGE')
+        bpy.data.textures[var].image = bpy.data.images['b_frame0000.png']
+        # END MOCK
+
         return {'FINISHED'}
