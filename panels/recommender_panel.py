@@ -50,8 +50,23 @@ class RecommenderPanel(Panel):
             row.operator('scene.learn_preferences')
 
     def _draw_recommendations_tab(self, context):
-        # TODO: draw recommendations tab
-        pass
+        properties = context.scene.recommendations_properties
+        materials = properties.materials
+
+        row = self.layout.row()
+        row.operator('scene.recommend_materials')
+
+        self._draw_template_list(
+            materials,
+            'RecommendationsList',
+            'Recommendations_UI_List'
+        )
+
+        if materials.index != -1:
+            self._draw_material_preview(properties)
+
+        row = self.layout.row()
+        row.operator('scene.clear_recommendations')
 
     def _draw_search_tab(self, context):
         # TODO: draw search tab

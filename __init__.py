@@ -23,7 +23,8 @@ from . operators.preview.export_to_vse import ExportToVSEOperator
 from . operators.preview.steppers import FrameStepper
 from . operators.preview.steppers import NextFrameStepper
 from . operators.preview.steppers import PreviousFrameStepper
-# from . operators.recommendations.recommend import
+from . operators.recommendations.clear import ClearRecommendationsOperator
+from . operators.recommendations.recommend import RecommendOperator
 # from . operators.search.search import
 from . panels.recommender_panel import RecommenderPanel
 from . properties.data.frame_id import FrameIdGroup
@@ -57,6 +58,8 @@ classes = (
     FrameStepper,
     NextFrameStepper,
     PreviousFrameStepper,
+    ClearRecommendationsOperator,
+    RecommendOperator,
     RecommenderPanel,
     FrameIdGroup,
     MaterialData,
@@ -76,7 +79,7 @@ def register():
         register_class(aclass)
     Scene.global_properties = PointerProperty(type=GlobalProperties)
     Scene.preferences_properties = PointerProperty(type=PreferencesProperties)
-    Scene.recommnedations_properties = PointerProperty(type=RecommendationsProperties)
+    Scene.recommendations_properties = PointerProperty(type=RecommendationsProperties)
     Scene.search_properties = PointerProperty(type=SearchProperties)
 
 
@@ -85,7 +88,7 @@ def unregister():
         bpy.utils.unregister_class(aclass)
     del Scene.global_properties
     del Scene.preferences_properties
-    del Scene.recommnedations_properties
+    del Scene.recommendations_properties
     del Scene.search_properties
 
 
