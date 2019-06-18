@@ -11,6 +11,8 @@ def index_changed(self, context):
         context.scene.preferences_properties.dirty_preview = True
     elif properties.tabs == 'RECOMMENDATIONS':
         context.scene.recommendations_properties.dirty_preview = True
+    elif properties.tabs == 'SEARCH':
+        context.scene.search_properties.dirty_preview = True
 
 
 class MaterialList(PropertyGroup):
