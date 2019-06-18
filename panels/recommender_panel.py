@@ -69,8 +69,33 @@ class RecommenderPanel(Panel):
         row.operator('scene.clear_recommendations')
 
     def _draw_search_tab(self, context):
-        # TODO: draw search tab
-        pass
+        properties = context.scene.search_properties
+
+        if properties.latent_space_texture is not None:
+            row = self.layout.row()
+            row.alignment = 'CENTER'
+            if properties.latent_space_dirty_preview is True:
+                # changing scale to force a redraw on the preview
+                row.scale_x = 1.0 - random.uniform(0.0, 0.1)
+                row.scale_y = 1.0 + random.uniform(0.0, 0.1)
+                properties.latent_space_dirty_preview = False
+
+            row.template_preview(
+                properties.latent_space_texture,
+                show_buttons=False
+            )
+
+            row = self.layout.row()
+            row.prop(properties, 'x_coordinate')
+
+            row = self.layout.row()
+            row.prop(properties, 'y_coordinate')
+
+            row = self.layout.row()
+            row.operator('scene.view_from_latent_space')
+
+            if properties.materials.index != -1:
+                self._draw_material_preview(properties)
 
     def _draw_template_list(self, materials, subclass, id):
         row = self.layout.row()
