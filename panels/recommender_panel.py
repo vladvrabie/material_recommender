@@ -88,7 +88,8 @@ class RecommenderPanel(Panel):
         )
 
         if materials.index != -1:
-            self._draw_material_preview(properties)
+            with_buttons = materials.index != 0  # no buttons for latent space
+            self._draw_material_preview(properties, with_buttons)
 
     def _draw_template_list(self, materials, subclass, id):
         row = self.layout.row()
@@ -101,7 +102,7 @@ class RecommenderPanel(Panel):
             'index'         # index property in property group
         )
 
-    def _draw_material_preview(self, properties):
+    def _draw_material_preview(self, properties, with_buttons=True):
         materials = properties.materials
 
         row = self.layout.row()
@@ -116,19 +117,19 @@ class RecommenderPanel(Panel):
             materials.selected.current_frame_texture,
             show_buttons=False
         )
+        if with_buttons:
+            row = self.layout.row()
+            split_20_80 = row.split(factor=0.2)
+            row = split_20_80.row()  # 20% to the left
+            row.alignment = 'LEFT'
+            row.operator('preview.export_to_materials', icon='MATERIAL')
 
-        row = self.layout.row()
-        split_20_80 = row.split(factor=0.2)
-        row = split_20_80.row()  # 20% to the left
-        row.alignment = 'LEFT'
-        row.operator('preview.export_to_materials', icon='MATERIAL')
+            split_60_20 = split_20_80.split(factor=0.75)  # 60% center
+            steppers_row = split_60_20.row(align=True)
+            steppers_row.alignment = 'CENTER'
+            steppers_row.operator('preview.previous_stepper', icon='FRAME_PREV')
+            steppers_row.operator('preview.next_stepper', icon='FRAME_NEXT')
 
-        split_60_20 = split_20_80.split(factor=0.75)  # 60% center
-        steppers_row = split_60_20.row(align=True)
-        steppers_row.alignment = 'CENTER'
-        steppers_row.operator('preview.previous_stepper', icon='FRAME_PREV')
-        steppers_row.operator('preview.next_stepper', icon='FRAME_NEXT')
-
-        to_vse_row = split_60_20.row()  # 20% to the right
-        to_vse_row.alignment = 'RIGHT'
-        to_vse_row.operator('preview.export_to_vse', icon='SEQUENCE')
+            to_vse_row = split_60_20.row()  # 20% to the right
+            to_vse_row.alignment = 'RIGHT'
+            to_vse_row.operator('preview.export_to_vse', icon='SEQUENCE')
