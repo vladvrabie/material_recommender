@@ -1,5 +1,11 @@
-from bpy.props import EnumProperty, IntProperty
+from bpy.props import EnumProperty
 from bpy.types import PropertyGroup
+
+
+def tab_changed(self, context):
+    context.scene.preferences_properties.dirty_preview = True
+    context.scene.recommendations_properties.dirty_preview = True
+    context.scene.search_properties.dirty_preview = True
 
 
 class GlobalProperties(PropertyGroup):
@@ -33,7 +39,8 @@ class GlobalProperties(PropertyGroup):
         default='PREFERENCES',
         name="Tabs",
         description='This addon can quickly generate materials ' +
-                    'tailored to your preferences.'
+                    'tailored to your preferences.',
+        update=tab_changed
     )
 
     # TODO: add number of materials tracked
