@@ -11,8 +11,7 @@ class RecommendOperator(Operator):
 
     @classmethod
     def poll(cls, context):
-        # TODO: if gpr was trained
-        return True
+        return context.scene.preferences_properties.is_gpr_trained
 
     def execute(self, context):
         # TODO: implement recommend operator
@@ -24,7 +23,7 @@ class RecommendOperator(Operator):
         folder1 = ('C:\\Users\\vladv\\Desktop\\test\\h200\\', 'b_')
         folder2 = ('C:\\Users\\vladv\\Desktop\\test\\0_14_12__0\\', 'a_a_')
         sel = random.sample((folder1, folder2), 1)[0]
-        current_material.material_id = sel[1]
+        current_material.id = sel[1]
         current_material.load_from_folder(
             sel[0],
             frames_count=26,

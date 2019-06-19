@@ -23,3 +23,9 @@ class PreferencesProperties(BaseTabProperties, PropertyGroup):
         min=0,
         max=10
     )
+
+    is_gpr_trained: BoolProperty(
+        name='Is GPR Trained',
+        description='To track if the grp model was trained',
+        default=False
+    )

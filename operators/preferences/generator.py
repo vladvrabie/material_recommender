@@ -25,7 +25,7 @@ class PreferencesListGenerator(Operator):
         folder2 = ('C:\\Users\\vladv\\Desktop\\test\\0_14_12__0\\', 'a_a_')
         # folder3 = ('C:\\Users\\vladv\\Desktop\\test\\18_6_40__0\\', 'b_')
         sel = random.sample((folder1, folder2), 1)[0]
-        current_material.material_id = sel[1]
+        current_material.id = sel[1]
         current_material.load_from_folder(
             sel[0],
             frames_count=26,
