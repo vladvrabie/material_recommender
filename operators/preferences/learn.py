@@ -9,8 +9,11 @@ class LearnPreferencesOperator(Operator):
 
     @classmethod
     def poll(cls, context):
-        # TODO: if at least one is different than 0
-        return True
+        materials = context.scene.preferences_properties.materials.collection
+        for material in materials:
+            if material.rating != 0:
+                return True
+        return False
 
     def execute(self, context):
         # TODO: implement learn operator
