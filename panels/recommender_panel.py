@@ -108,8 +108,8 @@ class RecommenderPanel(Panel):
         row.alignment = 'CENTER'
         if properties.dirty_preview is True:
             # changing scale to force a redraw on the preview
-            row.scale_x = 1.0 - random.uniform(0.0, 0.1)
-            row.scale_y = 1.0 + random.uniform(0.0, 0.1)
+            row.scale_x = 1.0 - random.uniform(0.05, 0.1)
+            row.scale_y = 1.0 + random.uniform(0.05, 0.1)
             properties.dirty_preview = False
 
         row.template_preview(
