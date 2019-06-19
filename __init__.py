@@ -25,7 +25,7 @@ from . operators.preview.steppers import NextFrameStepper
 from . operators.preview.steppers import PreviousFrameStepper
 from . operators.recommendations.clear import ClearRecommendationsOperator
 from . operators.recommendations.recommend import RecommendOperator
-from . operators.search.search import ViewFromLatentSpaceOperator
+from . operators.search.add import AddFromLatentSpaceOperator
 from . panels.recommender_panel import RecommenderPanel
 from . properties.data.frame_id import FrameIdGroup
 from . properties.data.material_data import MaterialData
@@ -60,7 +60,7 @@ classes = (
     PreviousFrameStepper,
     ClearRecommendationsOperator,
     RecommendOperator,
-    ViewFromLatentSpaceOperator,
+    AddFromLatentSpaceOperator,
     RecommenderPanel,
     FrameIdGroup,
     MaterialData,
