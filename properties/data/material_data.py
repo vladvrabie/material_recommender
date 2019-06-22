@@ -40,7 +40,7 @@ class MaterialData(PropertyGroup):
     shader_values: FloatVectorProperty(
         name='Shader Values',
         description='Values for shader to render the material',
-        size=19,
+        size=20,
         precision=8
     )
 

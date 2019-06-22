@@ -10,8 +10,6 @@ class ExportToMaterialsOperator(Operator):
                      'material will be generated if it doesn\'t exist'
 
     def execute(self, context):
-        # TODO: implement export to materials
-
         properties = context.scene.global_properties
 
         if properties.tabs == 'PREFERENCES':
@@ -22,31 +20,17 @@ class ExportToMaterialsOperator(Operator):
             properties = context.scene.search_properties
 
         material_data = properties.materials.selected
-
-        uber_mat_name = 'Uber'
-        uber_material = None
-        if bpy.data.materials.get(uber_mat_name) is not None:
-            uber_material = bpy.data.materials[uber_mat_name]
-            print('found')
-        else:
-            uber_material = self._create_uber_material(context)
-            print('created')
-
-        # Cloning Uber
-        # active_object = bpy.context.active_object
-        # active_object.data.materials[0] = uber_material
-        # uber_clone_name = material_data.id
-        # uber_clone = bpy.data.materials.new(uber_mat_name + '.' + str(1).zfill(3))
-        # active_object.data.materials[0] = uber_clone
+        self._create_material(material_data)
 
         return {'FINISHED'}
 
-    def _create_uber_material(self, context):
-        uber_material = bpy.data.materials.new('Uber')
+    def _create_material(self, data):
+        uber_material = bpy.data.materials.new(data.id)
         uber_material.use_nodes = True
         nodes = uber_material.node_tree.nodes
         nodes.clear()
 
+        # Creating shader nodes
         glossy_bsdf_id = 'ShaderNodeBsdfGlossy'
         glossy1 = nodes.new(glossy_bsdf_id)
         glossy1.name = 'Glossy1 BSDF'
@@ -89,6 +73,7 @@ class ExportToMaterialsOperator(Operator):
         material_output.name = 'Material Output'
         material_output.location = (800.0, 60.0)
 
+        # Creating links between nodes
         links = uber_material.node_tree.links
         links.new(glossy1.outputs[0], mix_glossies.inputs[1])
         links.new(glossy2.outputs[0], mix_glossies.inputs[2])
@@ -101,5 +86,44 @@ class ExportToMaterialsOperator(Operator):
 
         links.new(mix_mixers.outputs[0], material_output.inputs[0])
         links.new(volume_abs.outputs[0], material_output.inputs[1])
+
+        # Setting input values of the nodes
+        glossy1.inputs[0].default_value = (  # RGB: [0], [1], [2], 1.0
+            data.shader_values[0],
+            data.shader_values[1],
+            data.shader_values[2],
+            1.0
+        )
+        glossy1.inputs[1].default_value = data.shader_values[3]
+
+        glossy2.inputs[0].default_value = (  # [4], [5], [6], 1.0
+            data.shader_values[4],
+            data.shader_values[5],
+            data.shader_values[6],
+            1.0
+        )
+        glossy2.inputs[1].default_value = data.shader_values[7]
+
+        mix_glossies.inputs[0].default_value = data.shader_values[8]
+        mix_lucids.inputs[0].default_value = data.shader_values[9]
+        mix_mixers.inputs[0].default_value = data.shader_values[10]
+
+        volume_abs.inputs[1].default_value = data.shader_values[11]
+
+        glass.inputs[0].default_value = (  # [12], [13], [14], 1.0
+            data.shader_values[12],
+            data.shader_values[13],
+            data.shader_values[14],
+            1.0
+        )
+        glass.inputs[1].default_value = data.shader_values[15]
+        glass.inputs[2].default_value = data.shader_values[16]
+
+        translucent.inputs[0].default_value = (  # [17], [18], [19], 1.0
+            data.shader_values[17],
+            data.shader_values[18],
+            data.shader_values[19],
+            1.0
+        )
 
         return uber_material
