@@ -32,6 +32,13 @@ class ExportToMaterialsOperator(Operator):
             uber_material = self._create_uber_material(context)
             print('created')
 
+        # Cloning Uber
+        # active_object = bpy.context.active_object
+        # active_object.data.materials[0] = uber_material
+        # uber_clone_name = material_data.id
+        # uber_clone = bpy.data.materials.new(uber_mat_name + '.' + str(1).zfill(3))
+        # active_object.data.materials[0] = uber_clone
+
         return {'FINISHED'}
 
     def _create_uber_material(self, context):
@@ -81,5 +88,18 @@ class ExportToMaterialsOperator(Operator):
         material_output = nodes.new(material_output_id)
         material_output.name = 'Material Output'
         material_output.location = (800.0, 60.0)
+
+        links = uber_material.node_tree.links
+        links.new(glossy1.outputs[0], mix_glossies.inputs[1])
+        links.new(glossy2.outputs[0], mix_glossies.inputs[2])
+
+        links.new(glass.outputs[0], mix_lucids.inputs[1])
+        links.new(translucent.outputs[0], mix_lucids.inputs[2])
+
+        links.new(mix_glossies.outputs[0], mix_mixers.inputs[1])
+        links.new(mix_lucids.outputs[0], mix_mixers.inputs[2])
+
+        links.new(mix_mixers.outputs[0], material_output.inputs[0])
+        links.new(volume_abs.outputs[0], material_output.inputs[1])
 
         return uber_material
