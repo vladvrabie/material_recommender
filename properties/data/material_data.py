@@ -68,7 +68,8 @@ class MaterialData(PropertyGroup):
             bpy.data.textures[file_name].image = bpy.data.images[file_name]
 
     def load_from_memory(self, list_of_images):
-        # TODO: load image from numpy after procedurally generated
+        # TODO: load image from numpy after procedurally generated in bpy.data.images and textures
+        # create frames ids; include png extension ???
         pass
 
     def save_to_disk(self, path='', file_format='PNG'):
