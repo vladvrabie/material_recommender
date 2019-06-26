@@ -2,6 +2,8 @@ from bpy.types import Operator
 import numpy as np
 
 from material_recommender.gms import gpr
+from material_recommender.gms import gplvm
+
 
 class LearnPreferencesOperator(Operator):
     bl_idname = 'scene.learn_preferences'
@@ -25,6 +27,19 @@ class LearnPreferencesOperator(Operator):
             preferences_properties.materials.collection,
             preferences_properties.is_persistent
         )
+
+        threshold = int(preferences_properties.threshold)
+        x_all = np.array(trained_gpr.X)
+        print(x_all)
+        x_above_treshhold = x_all[x_all > threshold]
+        print(x_above_treshhold)
+
+        # print('\n\n')
+        # print(gpr.predict(preferences_properties.materials.collection))  # shape (n, 1)
+
+        gplvm.train(x_above_treshhold)
+
+        pref_map = gplvm.generate_preference_map(x_above_treshhold)
 
 
         # MOCK for Search tab
