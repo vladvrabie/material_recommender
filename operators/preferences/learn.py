@@ -1,5 +1,7 @@
 from bpy.types import Operator
+import numpy as np
 
+from material_recommender.gms import gpr
 
 class LearnPreferencesOperator(Operator):
     bl_idname = 'scene.learn_preferences'
@@ -17,6 +19,13 @@ class LearnPreferencesOperator(Operator):
 
     def execute(self, context):
         # TODO: implement learn operator
+        preferences_properties = context.scene.preferences_properties
+
+        trained_gpr = gpr.train(
+            preferences_properties.materials.collection,
+            preferences_properties.is_persistent
+        )
+
 
         # MOCK for Search tab
         # import bpy
@@ -41,5 +50,5 @@ class LearnPreferencesOperator(Operator):
         #     props.materials.collection[-1].frames_ids[2].id = 'b_frame0002.png'
         # END MOCK
 
-        context.scene.preferences_properties.is_gpr_trained = True
+        preferences_properties.is_gpr_trained = True
         return {'FINISHED'}
