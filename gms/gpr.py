@@ -14,19 +14,11 @@ def train(materials, is_persistent):
     y = np.array([material.rating for material in materials])
     y = y[:, np.newaxis]
 
-    path = tempfile.gettempdir()
-    path = os.path.join(path, 'material_recommender')
-    if not os.path.isdir(path):
-        os.mkdir(path)
-
-    gprobj_path = os.path.join(path, 'gpr.obj')
-
     if is_persistent:
-        if os.path.isfile(gprobj_path):
-            with open(gprobj_path, 'rb') as gprobj:
-                gpr_loaded = pickle.load(gprobj)
-                x = np.vstack((x, gpr_loaded.X))
-                y = np.vstack((y, gpr_loaded.Y))
+        gpr_loaded = load_from_disk()
+        if gpr_loaded is not None:
+            x = np.vstack((x, gpr_loaded.X))
+            y = np.vstack((y, gpr_loaded.Y))
 
     number_of_variables = x.shape[1]
     w_var = np.ones(number_of_variables)
@@ -34,13 +26,21 @@ def train(materials, is_persistent):
     gpr_new = GPy.models.GPRegression(x, y, kernel=mlp)
     gpr_new.optimize('rprop')
 
-    with open(gprobj_path, 'wb') as gprobj:
-        pickle.dump(gpr_new, gprobj)
+    save_to_disk(gpr_new)
 
     return gpr_new
 
 
-def predict(materials):
+def predict(x, model=None):
+    if model is None:
+        gpr_loaded = load_from_disk()
+    else:
+        gpr_loaded = model
+
+    return gpr_loaded.predict(x)[0]  # not returning the variance
+
+
+def load_from_disk():
     path = tempfile.gettempdir()
     path = os.path.join(path, 'material_recommender')
     if not os.path.isdir(path):
@@ -54,5 +54,17 @@ def predict(materials):
     with open(gprobj_path, 'rb') as gprobj:
         gpr_loaded = pickle.load(gprobj)
 
-    x = np.array([material.shader_values for material in materials])
-    return gpr_loaded.predict(x)[0]  # not returning the variance
+    return gpr_loaded
+
+
+def save_to_disk(model):
+    if model is not None:
+        path = tempfile.gettempdir()
+        path = os.path.join(path, 'material_recommender')
+        if not os.path.isdir(path):
+            os.mkdir(path)
+
+        gprobj_path = os.path.join(path, 'gpr.obj')
+
+        with open(gprobj_path, 'wb') as gprobj:
+            pickle.dump(model, gprobj)
