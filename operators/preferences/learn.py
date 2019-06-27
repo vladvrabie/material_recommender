@@ -50,7 +50,7 @@ class LearnPreferencesOperator(Operator):
                 pref_map_image_id,
                 width=pref_map.shape[1],
                 height=pref_map.shape[0],
-                alpha=False,
+                alpha=True,
                 float_buffer=False
             )
             pref_map_texture = bpy.data.textures.new(
@@ -66,14 +66,15 @@ class LearnPreferencesOperator(Operator):
             pref_map_image = bpy.data.images[pref_map_image_id]
             pref_map_texture = bpy.data.textures[pref_map_image_id]
 
-        try:
-            print(pref_map.shape)
-            pref_map_image.pixels = pref_map.flatten() / 255
-        except Exception as e:
-            print(e)
-        print('ok')
-
-        # pref_map_texture.image = pref_map_image
+        height, width, _ = pref_map.shape
+        alpha_channel = np.full((height, width, 1), 255)
+        pref_map = np.concatenate((pref_map, alpha_channel), axis=2)
+        print(pref_map.shape)
+        print(pref_map)
+        # the image must be flattened because that's how blender expects it
+        # also blender saves it from the last row to the first
+        pref_map_image.pixels = pref_map[::-1].flatten() / 255
+        pref_map_texture.image = pref_map_image
 
         preferences_properties.is_gpr_trained = True
         return {'FINISHED'}
