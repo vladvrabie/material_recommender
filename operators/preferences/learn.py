@@ -28,15 +28,19 @@ class LearnPreferencesOperator(Operator):
             preferences_properties.is_persistent
         )
 
+        # TODO: possibly move as method in gpr
         threshold = int(preferences_properties.threshold)
         x_all = np.array(trained_gpr.X)
         y_all = np.array(trained_gpr.Y)
         x_above_treshhold = x_all[y_all.flatten() > threshold]
-        print(x_above_treshhold)
 
-        gplvm.train(x_above_treshhold)
+        trained_gplvm = gplvm.train(x_above_treshhold)
 
-        pref_map = gplvm.generate_preference_map(x_above_treshhold)
+        pref_map = gplvm.generate_preference_map(
+            x_above_treshhold,
+            gplvm_model=trained_gplvm,
+            gpr_model=trained_gpr
+        )
 
 
         # MOCK for Search tab
