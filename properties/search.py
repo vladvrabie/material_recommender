@@ -1,4 +1,4 @@
-from bpy.props import FloatProperty
+from bpy.props import FloatProperty, StringProperty
 from bpy.types import PropertyGroup
 
 from . base import BaseTabProperties
@@ -26,4 +26,11 @@ class SearchProperties(BaseTabProperties, PropertyGroup):
         max=2.5,
         precision=5,
         step=1
+    )
+
+    latent_space_image_id: StringProperty(
+        name='Latent Space Image Id',
+        description='Id of the latent space (preferences map) and key ' +
+                    'in bpy.data.images and textures',
+        default='Latent_Space'
     )
