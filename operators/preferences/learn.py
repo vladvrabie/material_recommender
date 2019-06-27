@@ -1,3 +1,4 @@
+import bpy
 from bpy.types import Operator
 import numpy as np
 
@@ -20,7 +21,6 @@ class LearnPreferencesOperator(Operator):
         return False
 
     def execute(self, context):
-        # TODO: implement learn operator
         preferences_properties = context.scene.preferences_properties
 
         trained_gpr = gpr.train(
@@ -42,29 +42,38 @@ class LearnPreferencesOperator(Operator):
             gpr_model=trained_gpr
         )
 
+        search_properties = context.scene.search_properties
+        pref_map_image_id = search_properties.latent_space_image_id
 
-        # MOCK for Search tab
-        # import bpy
-        # var = context.scene.search_properties.latent_space_image_id
-        # bpy.data.textures.new(name=var, type='IMAGE')
-        # props = context.scene.search_properties
-        # props.materials.collection.add()
-        # props.materials.index = 0
-        # props.materials.collection[-1].frames_ids.add()
-        # props.materials.collection[-1].frames_ids.add()
-        # props.materials.collection[-1].frames_ids.add()
+        if pref_map_image_id not in bpy.data.images.keys():
+            pref_map_image = bpy.data.images.new(
+                pref_map_image_id,
+                width=pref_map.shape[1],
+                height=pref_map.shape[0],
+                alpha=False,
+                float_buffer=False
+            )
+            pref_map_texture = bpy.data.textures.new(
+                name=pref_map_image_id,
+                type='IMAGE'
+            )
+            search_properties.materials.collection.add()
+            search_properties.materials.index = 0
+            pref_map_data = search_properties.materials.collection[0]
+            pref_map_data.frames_ids.add()
+            pref_map_data.frames_ids[0].id = pref_map_image_id
+        else:
+            pref_map_image = bpy.data.images[pref_map_image_id]
+            pref_map_texture = bpy.data.textures[pref_map_image_id]
 
-        # try:
-        #     bpy.data.textures[var].image = bpy.data.images['b_frame0000.png']
-        #     props.materials.collection[-1].frames_ids[0].id = 'a_a_frame0000.png'
-        #     props.materials.collection[-1].frames_ids[1].id = 'a_a_frame0001.png'
-        #     props.materials.collection[-1].frames_ids[2].id = 'a_a_frame0002.png'
-        # except:
-        #     bpy.data.textures[var].image = bpy.data.images['a_a_frame0000.png']
-        #     props.materials.collection[-1].frames_ids[0].id = 'b_frame0000.png'
-        #     props.materials.collection[-1].frames_ids[1].id = 'b_frame0001.png'
-        #     props.materials.collection[-1].frames_ids[2].id = 'b_frame0002.png'
-        # END MOCK
+        try:
+            print(pref_map.shape)
+            pref_map_image.pixels = pref_map.flatten() / 255
+        except Exception as e:
+            print(e)
+        print('ok')
+
+        # pref_map_texture.image = pref_map_image
 
         preferences_properties.is_gpr_trained = True
         return {'FINISHED'}
