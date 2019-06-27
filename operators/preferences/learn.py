@@ -30,12 +30,9 @@ class LearnPreferencesOperator(Operator):
 
         threshold = int(preferences_properties.threshold)
         x_all = np.array(trained_gpr.X)
-        print(x_all)
-        x_above_treshhold = x_all[x_all > threshold]
+        y_all = np.array(trained_gpr.Y)
+        x_above_treshhold = x_all[y_all.flatten() > threshold]
         print(x_above_treshhold)
-
-        # print('\n\n')
-        # print(gpr.predict(preferences_properties.materials.collection))  # shape (n, 1)
 
         gplvm.train(x_above_treshhold)
 
