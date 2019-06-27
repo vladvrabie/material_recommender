@@ -64,10 +64,10 @@ def generate_preference_map(y, highlight_coords=None,
     )
     plt.colorbar()
     for pref_coord in preferences_coordinates:
-        circle = plt.Circle(pref_coord, 0.01, color='g')
+        circle = plt.Circle(pref_coord, 0.08, color='g')
         ax.add_artist(circle)
     if highlight_coords is not None:
-        circle = plt.Circle(np.atleast_2d(highlight_coords), 0.01, color='b')
+        circle = plt.Circle(np.atleast_2d(highlight_coords), 0.08, color='b')
         ax.add_artist(circle)
 
     fig.tight_layout(pad=0.8)
