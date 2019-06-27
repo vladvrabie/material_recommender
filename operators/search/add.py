@@ -1,6 +1,9 @@
-import random
-
 from bpy.types import Operator
+import numpy as np
+
+from material_recommender.gms import cnn
+from material_recommender.gms import gplvm
+from material_recommender.gms import gpr
 
 
 class AddFromLatentSpaceOperator(Operator):
@@ -17,26 +20,20 @@ class AddFromLatentSpaceOperator(Operator):
         properties = context.scene.search_properties
         materials = properties.materials.collection
 
-        # TODO: implement add from latent space
-        # get material float values from latent space
-        # generate frames
-        # load frames into blender and create material property group
-        # MAYBE: generate new render of latent space
+        coordinates = np.array([[properties.x_coordinate, properties.y_coordinate]])
+        shader_values = gplvm.predict(coordinates)  # (1, 20)
+        rating = gpr.predict(shader_values)  # (1, 1)
+        print(rating.shape)
 
-        # MOCK
         materials.add()
         current_material = materials[-1]
-        folder1 = ('C:\\Users\\vladv\\Desktop\\test\\h200\\', 'b_')
-        folder2 = ('C:\\Users\\vladv\\Desktop\\test\\0_14_12__0\\', 'a_a_')
-        # folder3 = ('C:\\Users\\vladv\\Desktop\\test\\18_6_40__0\\', 'b_')
-        sel = random.sample((folder1, folder2), 1)[0]
-        current_material.id = sel[1]
-        current_material.load_from_folder(
-            sel[0],
-            frames_count=26,
-            prefix=sel[1],
-            extension='.png'
-        )
-        # END MOCK
+        # TODO: generate unique id
+        # TODO: call neural net for frames
+        cnn.hardcoded_predict(current_material)
+        
+        current_material.rating = int(np.clip(rating, 0, 10))
+        current_material.shader_values = shader_values[0]
+
+        # MAYBE: generate new render of latent space
 
         return {'FINISHED'}
