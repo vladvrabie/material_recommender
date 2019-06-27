@@ -31,13 +31,11 @@ def train(materials, is_persistent):
     return gpr_new
 
 
-def predict(x, model=None):
-    if model is None:
-        gpr_loaded = load_from_disk()
-    else:
-        gpr_loaded = model
+def predict(x, gpr_model=None):
+    if gpr_model is None:
+        gpr_model = load_from_disk()
 
-    return gpr_loaded.predict(x)[0]  # not returning the variance
+    return gpr_model.predict(x)[0]  # not returning the variance
 
 
 def load_from_disk():
