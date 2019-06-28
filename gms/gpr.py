@@ -82,5 +82,74 @@ def generate_random_shader(count=1):
     return shader
 
 
-def recommend(how_many=1, min_threshold=0, gpr_model=None):
-    pass
+def recommend(at_least=1, min_threshold=0, gpr_model=None):
+    if gpr_model is None:
+        gpr_model = load_from_disk()
+
+    shaders, ratings = None, None
+    while shaders is None:
+        shaders, ratings = _recommend_from_batch(
+            min_threshold=min_threshold,
+            gpr_model=gpr_model
+        )
+
+    all_shaders = shaders
+    all_ratings = ratings
+
+    while all_shaders.shape[0] < at_least:
+        shaders, ratings = _recommend_from_batch(
+            min_threshold=min_threshold,
+            gpr_model=gpr_model
+        )
+
+        if shaders is not None:
+            all_shaders = np.vstack((all_shaders, shaders))
+            all_ratings = np.vstack((all_ratings, ratings))
+
+    return all_shaders, all_ratings
+
+
+def _recommend_from_batch(batch_size=20, min_threshold=0, delta=2, gpr_model=None):
+    shaders = generate_random_shader(batch_size)
+    ratings = predict(shaders, gpr_model)
+    ratings = np.clip(ratings, 0, 10)
+
+    # Throw away the shaders that are too far away from threshold
+    shaders = shaders[ratings.flatten() > min_threshold - delta]
+    ratings = ratings[ratings.flatten() > min_threshold - delta]
+
+    if shaders.shape[0] == 0:
+        return None, None
+
+    shaders_to_improve = ratings.flatten() < min_threshold
+    count = np.count_nonzero(shaders_to_improve)
+
+    minima = np.array([[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,    0, 1.1, 0, 0, 0]])
+    maxima = np.array([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 0.04,   2, 1, 1, 1]])
+
+    number_of_steps = 20
+    if count > 0:
+        for _ in range(number_of_steps):
+            corrections = 0.1 * generate_random_shader(count)
+            if np.random.uniform(0, 1) < 0.5:
+                shaders[shaders_to_improve] += corrections
+            else:
+                shaders[shaders_to_improve] -= corrections
+
+            shaders[shaders_to_improve] = np.clip(
+                shaders[shaders_to_improve],
+                minima,
+                maxima
+            )
+
+            ratings[shaders_to_improve] = predict(shaders[shaders_to_improve], gpr_model)
+            shaders_to_improve = ratings.flatten() < min_threshold
+            count = np.count_nonzero(shaders_to_improve)
+            if count == 0:
+                break
+
+    # Throw away the shaders that below threshold
+    shaders = shaders[ratings.flatten() > min_threshold]
+    ratings = ratings[ratings.flatten() > min_threshold]
+
+    return shaders, ratings

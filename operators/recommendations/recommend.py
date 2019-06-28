@@ -1,6 +1,7 @@
-import random
-
 from bpy.types import Operator
+
+from material_recommender.gms import cnn
+from material_recommender.gms import gpr
 
 
 class RecommendOperator(Operator):
@@ -15,21 +16,26 @@ class RecommendOperator(Operator):
 
     def execute(self, context):
         # TODO: implement recommend operator
+        preferences_properties = context.scene.preferences_properties
 
-        # MOCK GENERATION (to test preview)
-        materials = context.scene.recommendations_properties.materials.collection
-        materials.add()
-        current_material = materials[-1]
-        folder1 = ('C:\\Users\\vladv\\Desktop\\test\\h200\\', 'b_')
-        folder2 = ('C:\\Users\\vladv\\Desktop\\test\\0_14_12__0\\', 'a_a_')
-        sel = random.sample((folder1, folder2), 1)[0]
-        current_material.id = sel[1]
-        current_material.load_from_folder(
-            sel[0],
-            frames_count=26,
-            prefix=sel[1],
-            extension='.png'
-        )
-        # END MOCK GENERATION
+        recommended, ratings = gpr.recommend(
+            at_least=10,
+            min_threshold=int(preferences_properties.threshold)
+        )  # (n, 20), (n, [1])
+
+        # number_of_recomm = recommended.shape[0]
+
+        # TODO: call cnn to predict recommendations
+        # frames = cnn.predict(recommended)
+
+        # materials = context.scene.recommendations_properties.materials.collection
+        # for _ in range(number_of_recomm):
+        #     materials.add()
+        #     # current_material = materials[-1]
+
+        #     # TODO: generate unique id
+        #     # load frames from numpy
+        #     # current_material.rating = ...
+        #     # current_material.shader_values = ...
 
         return {'FINISHED'}
