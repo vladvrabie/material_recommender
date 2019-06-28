@@ -91,6 +91,9 @@ class RecommenderPanel(Panel):
             with_buttons = materials.index != 0  # no buttons for latent space
             self._draw_material_preview(properties, with_buttons)
 
+        row = self.layout.row()
+        row.operator('scene.clear_searches')
+
     def _draw_template_list(self, materials, subclass, id):
         row = self.layout.row()
         row.template_list(
