@@ -5,7 +5,7 @@ from material_recommender.gms import gpr
 
 
 class PreferencesListGenerator(Operator):
-    bl_idname = 'scene.preferences_list_generator'  # TODO: rename all bl_idnames
+    bl_idname = 'scene.preferences_list_generator'  # TODO: rename all bl_idnames and review all code
     bl_label = 'Populate preferences list'
     bl_description = 'A new set of materials will be generated for rating.'
 

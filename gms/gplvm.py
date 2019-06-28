@@ -54,6 +54,7 @@ def generate_preference_map(y, highlight_coords=None,
 
     preferences_coordinates = gplvm_model.infer_newX(y, optimize=True)[0]
 
+    # TODO: solve second call bug
     matplotlib.use('Agg')
     fig, ax = plt.subplots()
     plt.imshow(
