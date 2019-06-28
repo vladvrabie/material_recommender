@@ -151,5 +151,6 @@ def _recommend_from_batch(batch_size=20, min_threshold=0, delta=2, gpr_model=Non
     # Throw away the shaders that below threshold
     shaders = shaders[ratings.flatten() > min_threshold]
     ratings = ratings[ratings.flatten() > min_threshold]
+    ratings = np.clip(ratings, 0, 10)
 
     return shaders, ratings

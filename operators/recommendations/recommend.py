@@ -21,21 +21,24 @@ class RecommendOperator(Operator):
         recommended, ratings = gpr.recommend(
             at_least=10,
             min_threshold=int(preferences_properties.threshold)
-        )  # (n, 20), (n, [1])
+        )  # (n, 20), (n, 1)
 
-        # number_of_recomm = recommended.shape[0]
+        number_of_recomm = recommended.shape[0]
 
         # TODO: call cnn to predict recommendations
         # frames = cnn.predict(recommended)
 
-        # materials = context.scene.recommendations_properties.materials.collection
-        # for _ in range(number_of_recomm):
-        #     materials.add()
-        #     # current_material = materials[-1]
+        materials = context.scene.recommendations_properties.materials.collection
+        for i in range(number_of_recomm):
+            materials.add()
+            current_material = materials[-1]
 
-        #     # TODO: generate unique id
-        #     # load frames from numpy
-        #     # current_material.rating = ...
-        #     # current_material.shader_values = ...
+            # TODO: generate unique id
+
+            # load frames from numpy
+            cnn.hardcoded_predict(current_material)
+
+            current_material.rating = ratings[i, 0]
+            current_material.shader_values = recommended[i]
 
         return {'FINISHED'}
