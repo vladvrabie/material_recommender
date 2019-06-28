@@ -1,5 +1,4 @@
 from bpy.types import Operator
-import numpy as np
 
 from material_recommender.gms import cnn
 from material_recommender.gms import gpr
@@ -14,18 +13,20 @@ class PreferencesListGenerator(Operator):
         materials = context.scene.preferences_properties.materials.collection
         number_of_samples = 30
 
-        # TODO: try to vectorize this
-        for _ in range(number_of_samples):
+        shaders_values = gpr.generate_random_shader(number_of_samples)
+
+        # TODO: call the neural net
+        # frames = cnn.predict(shaders_values)  # (30*25, 120000)
+
+        for i in range(number_of_samples):
             materials.add()
             current_material = materials[-1]
 
             # TODO: generate unique id
 
-            current_material.shader_values = gpr.generate_random_shader()
-
-            # TODO: call the neural net
-            # frames = cnn.predict(current_material.shader_values)  # frames.shape = (25, 200, 200, 3)
             # current_material.load_from_memory(frames)
             cnn.hardcoded_predict(current_material)
+
+            current_material.shader_values = shaders_values[i]
 
         return {'FINISHED'}

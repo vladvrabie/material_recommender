@@ -30,10 +30,10 @@ class AddFromLatentSpaceOperator(Operator):
         # TODO: generate unique id
         # TODO: call neural net for frames
         cnn.hardcoded_predict(current_material)
-        
+
         current_material.rating = int(np.clip(rating, 0, 10))
         current_material.shader_values = shader_values[0]
 
-        # MAYBE: generate new render of latent space
+        # TODO: generate new render of latent space
 
         return {'FINISHED'}

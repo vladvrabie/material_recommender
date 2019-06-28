@@ -68,13 +68,17 @@ def save_to_disk(model):
             pickle.dump(model, gprobj)
 
 
-def generate_random_shader():
+def generate_random_shader(count=1):
     number_of_variables = 20
-    shader = np.random.rand(number_of_variables)
-    shader[3] = 1.0  # Roughness of Glossy 1 is always 1
-    shader[11] *= 2  # Volume absorbtion density in (0, 2)
-    shader[15] = np.random.uniform(0.0, 0.04)  # Glass roughness
-    shader[16] = np.random.uniform(1.1, 2.0)  # Glass IOR
+    shader = np.random.rand(count, number_of_variables)
+    # Roughness of Glossy 1 is always 1
+    shader[:, 3] = np.full((count,), 1.0)
+    # Volume absorbtion density in (0, 2)
+    shader[:, 11] *= 2
+    # Glass roughness
+    shader[:, 15] = np.random.uniform(0.0, 0.04, (count,))
+    # Glass IOR
+    shader[:, 16] = np.random.uniform(1.1, 2.0, (count,))
     return shader
 
 
