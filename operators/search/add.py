@@ -1,4 +1,3 @@
-import bpy
 from bpy.types import Operator
 import numpy as np
 
@@ -30,12 +29,14 @@ class AddFromLatentSpaceOperator(Operator):
 
         shader_values = gplvm.predict(coordinates, gplvm_model=gplvm_model)  # (1, 20)
         rating = gpr.predict(shader_values, gpr_model=gpr_model)  # (1, 1)
+        frames = cnn.predict(shader_values)
 
         materials.add()
         current_material = materials[-1]
-        # TODO: generate unique id
-        # TODO: call neural net for frames
-        cnn.hardcoded_predict(current_material)
+
+        current_material.id = search_properties.next_id
+
+        current_material.load_from_memory(frames)
 
         current_material.rating = int(np.clip(rating, 0, 10))
         current_material.shader_values = shader_values[0]
