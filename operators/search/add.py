@@ -1,3 +1,4 @@
+import bpy
 from bpy.types import Operator
 import numpy as np
 
@@ -17,12 +18,18 @@ class AddFromLatentSpaceOperator(Operator):
         return context.scene.preferences_properties.is_gpr_trained
 
     def execute(self, context):
-        properties = context.scene.search_properties
-        materials = properties.materials.collection
+        search_properties = context.scene.search_properties
+        materials = search_properties.materials.collection
 
-        coordinates = np.array([[properties.x_coordinate, properties.y_coordinate]])
-        shader_values = gplvm.predict(coordinates)  # (1, 20)
-        rating = gpr.predict(shader_values)  # (1, 1)
+        coordinates = np.array([
+            [search_properties.x_coordinate, search_properties.y_coordinate]
+        ])
+
+        gplvm_model = gplvm.load_from_disk()
+        gpr_model = gpr.load_from_disk()
+
+        shader_values = gplvm.predict(coordinates, gplvm_model=gplvm_model)  # (1, 20)
+        rating = gpr.predict(shader_values, gpr_model=gpr_model)  # (1, 1)
 
         materials.add()
         current_material = materials[-1]
@@ -34,5 +41,31 @@ class AddFromLatentSpaceOperator(Operator):
         current_material.shader_values = shader_values[0]
 
         # TODO: generate new render of latent space
+        # threshold = int(context.scene.preferences_properties.threshold)
+        # x_above_treshold = gpr.above_threshold_x_from_model(
+        #     threshold,
+        #     gpr_model
+        # )
+
+        # pref_map = gplvm.generate_preference_map(
+        #     x_above_treshold,
+        #     highlight_coords=coordinates,
+        #     gplvm_model=gplvm_model,
+        #     gpr_model=gpr_model
+        # )
+
+        # height, width, _ = pref_map.shape
+        # alpha_channel = np.full((height, width, 1), 255)
+        # pref_map = np.concatenate((pref_map, alpha_channel), axis=2)
+
+        # pref_map_image_id = search_properties.latent_space_image_id
+        # pref_map_image = bpy.data.images[pref_map_image_id]
+        # pref_map_texture = bpy.data.textures[pref_map_image_id]
+
+        # # the image must be flattened because that's how blender expects it
+        # # also the values must be in [0, 1] interval
+        # # also blender saves it from the last row to the first
+        # pref_map_image.pixels = pref_map[::-1].flatten() / 255
+        # pref_map_texture.image = pref_map_image
 
         return {'FINISHED'}

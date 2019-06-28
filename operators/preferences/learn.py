@@ -71,6 +71,7 @@ class LearnPreferencesOperator(Operator):
         alpha_channel = np.full((height, width, 1), 255)
         pref_map = np.concatenate((pref_map, alpha_channel), axis=2)
         # the image must be flattened because that's how blender expects it
+        # also the values must be in [0, 1] interval
         # also blender saves it from the last row to the first
         pref_map_image.pixels = pref_map[::-1].flatten() / 255
         pref_map_texture.image = pref_map_image
