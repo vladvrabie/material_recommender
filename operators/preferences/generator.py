@@ -14,7 +14,9 @@ class PreferencesListGenerator(Operator):
         materials = preferences_properties.materials.collection
         number_of_samples = 30
 
-        # TODO: remove the old ones
+        for material in materials:
+            material.clear_from_memory()
+        materials.clear()
 
         shaders_values = gpr.generate_random_shader(number_of_samples)
 

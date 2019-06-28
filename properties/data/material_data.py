@@ -116,3 +116,12 @@ class MaterialData(PropertyGroup):
                 os.remove(frame_path)
             frame.save_render(frame_path)
         return (path, frames_names)
+
+    def clear_from_memory(self):
+        for frame_id_prop in self.frames_ids:
+            frame_id = frame_id_prop.id
+            texture = bpy.data.textures[frame_id]
+            bpy.data.textures.remove(texture)
+
+            image = bpy.data.images[frame_id]
+            bpy.data.images.remove(image)
