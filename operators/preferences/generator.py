@@ -10,22 +10,24 @@ class PreferencesListGenerator(Operator):
     bl_description = 'A new set of materials will be generated for rating.'
 
     def execute(self, context):
-        materials = context.scene.preferences_properties.materials.collection
+        preferences_properties = context.scene.preferences_properties
+        materials = preferences_properties.materials.collection
         number_of_samples = 30
+
+        # TODO: remove the old ones
 
         shaders_values = gpr.generate_random_shader(number_of_samples)
 
-        # TODO: call the neural net
-        # frames = cnn.predict(shaders_values)  # (30*25, 120000)
+        frames = cnn.predict(shaders_values)  # (30*25, 120000)
 
         for i in range(number_of_samples):
             materials.add()
             current_material = materials[-1]
 
-            # TODO: generate unique id
+            current_material.id = preferences_properties.next_id
 
-            # current_material.load_from_memory(frames)
-            cnn.hardcoded_predict(current_material)
+            material_frames = frames[i * 25:(i + 1) * 25]
+            current_material.load_from_memory(material_frames)
 
             current_material.shader_values = shaders_values[i]
 

@@ -5,6 +5,7 @@ import bpy
 from bpy.props import CollectionProperty, FloatVectorProperty
 from bpy.props import IntProperty, StringProperty
 from bpy.types import PropertyGroup
+import numpy as np
 
 from . frame_id import FrameIdGroup
 
@@ -67,10 +68,35 @@ class MaterialData(PropertyGroup):
             bpy.data.textures.new(name=file_name, type='IMAGE')
             bpy.data.textures[file_name].image = bpy.data.images[file_name]
 
-    def load_from_memory(self, list_of_images):
-        # TODO: load image from numpy after procedurally generated in bpy.data.images and textures
-        # create frames ids; include png extension ???
-        pass
+    def load_from_memory(self, frames):
+        frames = frames.reshape(25, 200, 200, 3)
+        for i in range(frames.shape[0]):
+            # Preparing current frame
+            frame = frames[i]
+            height, width, _ = frame.shape
+            alpha_channel = np.full((height, width, 1), 255)
+            frame = np.concatenate((frame, alpha_channel), axis=2)
+            frame = frame[::-1].flatten()
+
+            # Adding the id
+            frame_id = self.id + "_frame" + str(i).zfill(4)
+            self.frames_ids.add()
+            self.frames_ids[-1].id = frame_id
+
+            # Loading it in bpy.data
+            frame_image = bpy.data.images.new(
+                frame_id,
+                width=width,
+                height=height,
+                alpha=True,
+                float_buffer=False
+            )
+            frame_texture = bpy.data.textures.new(
+                name=frame_id,
+                type='IMAGE'
+            )
+            frame_image.pixels = frame
+            frame_texture.image = frame_image
 
     def save_to_disk(self, path='', file_format='PNG'):
         if path == '':
@@ -90,5 +116,3 @@ class MaterialData(PropertyGroup):
                 os.remove(frame_path)
             frame.save_render(frame_path)
         return (path, frames_names)
-
-    # TODO: create a function to generate frame file names

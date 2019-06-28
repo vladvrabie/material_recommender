@@ -29,3 +29,14 @@ class PreferencesProperties(BaseTabProperties, PropertyGroup):
         description='To track if the grp model was trained',
         default=False
     )
+
+    unique_index: IntProperty(  # TODO: move to base
+        name='Unique index',
+        description='Holds the number of materials generated.'
+    )
+
+    @property
+    def next_id(self):
+        current_id = 'Prefs{}'.format(self.unique_index)
+        self.unique_index += 1
+        return current_id
