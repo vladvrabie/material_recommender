@@ -5,22 +5,7 @@ from keras.models import model_from_json
 import numpy as np
 
 
-def hardcoded_predict(material_data):
-    folder1 = r'C:\Users\tbd7bm\Desktop\licenta\h200'
-    # folder2 = ('C:\\Users\\vladv\\Desktop\\test\\0_14_12__0\\', 'a_a_')
-    # # folder3 = ('C:\\Users\\vladv\\Desktop\\test\\18_6_40__0\\', 'b_')
-    # sel = random.sample((folder1, folder2), 1)[0]
-    material_data.id = 'mat'
-    material_data.load_from_folder(
-        folder1,
-        frames_count=25,
-        # prefix=sel[1],
-        extension='.png'
-    )
-
-
 def predict(shader_values):
-    # TODO: implement cnn predict
     K.clear_session()
 
     json_path = os.path.join(os.path.dirname(__file__), 'cnn_architecture.json')
