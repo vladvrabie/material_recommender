@@ -66,3 +66,17 @@ def save_to_disk(model):
 
         with open(gprobj_path, 'wb') as gprobj:
             pickle.dump(model, gprobj)
+
+
+def generate_random_shader():
+    number_of_variables = 20
+    shader = np.random.rand(number_of_variables)
+    shader[3] = 1.0  # Roughness of Glossy 1 is always 1
+    shader[11] *= 2  # Volume absorbtion density in (0, 2)
+    shader[15] = np.random.uniform(0.0, 0.04)  # Glass roughness
+    shader[16] = np.random.uniform(1.1, 2.0)  # Glass IOR
+    return shader
+
+
+def recommend(how_many=1, min_threshold=0, gpr_model=None):
+    pass
