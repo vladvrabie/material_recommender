@@ -60,6 +60,7 @@ class LearnPreferencesOperator(Operator):
             search_properties.materials.collection.add()
             search_properties.materials.index = 0
             pref_map_data = search_properties.materials.collection[0]
+            pref_map_data.id = pref_map_image_id
             pref_map_data.frames_ids.add()
             pref_map_data.frames_ids[0].id = pref_map_image_id
         else:

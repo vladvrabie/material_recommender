@@ -38,9 +38,10 @@ from . properties.common import GlobalProperties
 from . properties.preferences import PreferencesProperties
 from . properties.recommendations import RecommendationsProperties
 from . properties.search import SearchProperties
-from . ui.base_list import BaseList
-from . ui.preferences import PreferencesList
-from . ui.recommendations import RecommendationsList
+from . ui.base_list import BASE_UL_List
+from . ui.preferences import PREFERENCES_UL_List
+from . ui.recommendations import RECOMMENDATIONS_UL_List
+from . ui.search import SEARCH_UL_List
 
 
 bl_info = {
@@ -73,9 +74,10 @@ classes = (
     PreferencesProperties,
     RecommendationsProperties,
     SearchProperties,
-    BaseList,
-    PreferencesList,
-    RecommendationsList
+    BASE_UL_List,
+    PREFERENCES_UL_List,
+    RECOMMENDATIONS_UL_List,
+    SEARCH_UL_List
 )
 
 

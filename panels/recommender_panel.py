@@ -32,7 +32,7 @@ class RecommenderPanel(Panel):
 
         self._draw_template_list(
             materials,
-            'PreferencesList',
+            'PREFERENCES_UL_List',
             'Preferences_UI_List'
         )
 
@@ -58,7 +58,7 @@ class RecommenderPanel(Panel):
 
         self._draw_template_list(
             materials,
-            'RecommendationsList',
+            'RECOMMENDATIONS_UL_List',
             'Recommendations_UI_List'
         )
 
@@ -83,7 +83,7 @@ class RecommenderPanel(Panel):
 
         self._draw_template_list(
             materials,
-            'RecommendationsList',
+            'SEARCH_UL_List',
             'Search_UI_List'
         )
 
