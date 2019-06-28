@@ -24,18 +24,17 @@ class RecommendOperator(Operator):
 
         number_of_recomm = recommended.shape[0]
 
-        # TODO: call cnn to predict recommendations
-        # frames = cnn.predict(recommended)
+        frames = cnn.predict(recommended)
 
-        materials = context.scene.recommendations_properties.materials.collection
+        recommendations_properties = context.scene.recommendations_properties
+        materials = recommendations_properties.materials.collection
         for i in range(number_of_recomm):
             materials.add()
             current_material = materials[-1]
 
-            # TODO: generate unique id
+            current_material.id = recommendations_properties.next_id
 
-            # load frames from numpy
-            cnn.hardcoded_predict(current_material)
+            current_material.load_from_memory(frames[i * 25:(i + 1) * 25])
 
             current_material.rating = ratings[i, 0]
             current_material.shader_values = recommended[i]
