@@ -23,7 +23,6 @@ class AddFromLatentSpaceOperator(Operator):
         coordinates = np.array([[properties.x_coordinate, properties.y_coordinate]])
         shader_values = gplvm.predict(coordinates)  # (1, 20)
         rating = gpr.predict(shader_values)  # (1, 1)
-        print(rating.shape)
 
         materials.add()
         current_material = materials[-1]

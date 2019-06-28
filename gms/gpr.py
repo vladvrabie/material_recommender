@@ -68,6 +68,16 @@ def save_to_disk(model):
             pickle.dump(model, gprobj)
 
 
+def above_threshold_x_from_model(threshold, gpr_model=None):
+    if gpr_model is None:
+        gpr_model = load_from_disk()
+
+    x_all = np.array(gpr_model.X)
+    y_all = np.array(gpr_model.Y)
+    x_above_treshold = x_all[y_all.flatten() > threshold]
+    return x_above_treshold
+
+
 def generate_random_shader(count=1):
     number_of_variables = 20
     shader = np.random.rand(count, number_of_variables)

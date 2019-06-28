@@ -15,7 +15,6 @@ class RecommendOperator(Operator):
         return context.scene.preferences_properties.is_gpr_trained
 
     def execute(self, context):
-        # TODO: implement recommend operator
         preferences_properties = context.scene.preferences_properties
 
         recommended, ratings = gpr.recommend(
