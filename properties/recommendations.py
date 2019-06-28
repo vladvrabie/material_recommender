@@ -4,5 +4,9 @@ from . base import BaseTabProperties
 
 
 class RecommendationsProperties(BaseTabProperties, PropertyGroup):
-    # TODO: recommendations properties
-    pass
+
+    @property
+    def next_id(self):
+        current_id = 'Recomm{}'.format(self.unique_index)
+        self.unique_index += 1
+        return current_id

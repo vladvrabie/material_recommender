@@ -42,5 +42,3 @@ class GlobalProperties(PropertyGroup):
                     'tailored to your preferences.',
         update=tab_changed
     )
-
-    # TODO: add number of materials tracked

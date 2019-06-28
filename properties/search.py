@@ -34,3 +34,9 @@ class SearchProperties(BaseTabProperties, PropertyGroup):
                     'in bpy.data.images and textures',
         default='Latent_Space'
     )
+
+    @property
+    def next_id(self):
+        current_id = 'Search{}'.format(self.unique_index)
+        self.unique_index += 1
+        return current_id

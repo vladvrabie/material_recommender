@@ -30,11 +30,6 @@ class PreferencesProperties(BaseTabProperties, PropertyGroup):
         default=False
     )
 
-    unique_index: IntProperty(  # TODO: move to base
-        name='Unique index',
-        description='Holds the number of materials generated.'
-    )
-
     @property
     def next_id(self):
         current_id = 'Prefs{}'.format(self.unique_index)
