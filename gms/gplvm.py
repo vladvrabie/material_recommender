@@ -54,7 +54,6 @@ def generate_preference_map(y, highlight_coords=None,
 
     preferences_coordinates = gplvm_model.infer_newX(y, optimize=True)[0]
 
-    # TODO: solve second call bug
     matplotlib.use('Agg')
     fig, ax = plt.subplots()
     plt.imshow(
@@ -68,7 +67,7 @@ def generate_preference_map(y, highlight_coords=None,
         circle = plt.Circle(pref_coord, 0.08, color='g')
         ax.add_artist(circle)
     if highlight_coords is not None:
-        circle = plt.Circle(np.atleast_2d(highlight_coords), 0.08, color='b')
+        circle = plt.Circle(highlight_coords, 0.08, color='b')
         ax.add_artist(circle)
 
     fig.tight_layout(pad=0.8)
@@ -81,6 +80,7 @@ def generate_preference_map(y, highlight_coords=None,
     data = data.reshape(height, width, 3)
 
     plt.clf()
+    plt.close()
 
     return data
 
