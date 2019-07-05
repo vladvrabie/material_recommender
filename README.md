@@ -6,7 +6,7 @@ It is able to generate the preview of a material using neural rendering.
 It is based on the paper here: https://users.cg.tuwien.ac.at/zsolnai/gfx/gaussian-material-synthesis/
 Each material is an animation in which the light source moves for better assessment of the material.
 
-Features*:
+# Features:
 - view materials animations in VSE
 - export the materials for usage in the scene
 - generates a list of preferences that the user can score
@@ -14,11 +14,13 @@ Features*:
 - recommend materials similar to the ones rated
 - discover new materials in the preferences space based on high scoring materials
 
-* a material is a structure that simulates a material in the context of the extension; to generate a true blender material one can export the extension material
+Note: a material is a structure that simulates a material in the context of the extension; to generate a true blender material one can export the extension material
 
 
-Installation guide:
-Minimul Python version: 3.70
+# Installation guide:
+
+Minimum Python version: 3.70
+
 The extension uses the following packages:
 - numpy
 - scipy
@@ -28,7 +30,9 @@ The extension uses the following packages:
 - keras
 
 Consider using Anaconda for managing packages.
+
 The keras back-end user for developing this extension is tensorflow-gpu.
+
 Notes and errors when installing:
 1) At the moment of writing, GPy is not available for Python 3.7. Details on how to make it work here (vmarkovtsev's response): https://github.com/SheffieldML/GPy/issues/649
 2) In order to link the anaconda environment to Blender, see here: https://blender.stackexchange.com/a/51800
