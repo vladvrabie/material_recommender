@@ -1,3 +1,11 @@
+'''
+Credits to the folowing material and their source code:
+Károly Zsolnai-Fehér, Peter Wonka, and Michael Wimmer. 2018.
+Gaussian Material Synthesis.
+ACM Trans. Graph. 37, 4, Article 76 (August 2018), 14 pages.
+https://doi.org/10.1145/3197517.3201307
+'''
+
 import os
 
 from keras import backend as K
