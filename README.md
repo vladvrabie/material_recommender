@@ -31,7 +31,7 @@ The extension uses the following packages:
 
 Consider using Anaconda for managing packages.
 
-The keras back-end user for developing this extension is tensorflow-gpu.
+The keras back-end used for developing this extension is tensorflow-gpu.
 
 Notes and errors when installing:
 1) At the moment of writing, GPy is not available for Python 3.7. Details on how to make it work here (vmarkovtsev's response): https://github.com/SheffieldML/GPy/issues/649
